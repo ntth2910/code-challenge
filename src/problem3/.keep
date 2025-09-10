@@ -1,0 +1,45 @@
+1. Function recreated each render
+
+getPriority is defined inside the component → wastes memory every render.
+
+Fix: Move it outside or memoize.
+
+2. Inefficient filter & sort
+
+Filter logic is buggy (lhsPriority undefined).
+
+Sort calls getPriority multiple times → repeated work.
+
+useMemo depends on prices unnecessarily → triggers extra renders.
+
+Fix: Precompute priority, correct filter, and limit dependencies.
+
+3. Multiple array iterations
+
+Mapping sortedBalances twice → extra loops.
+
+Fix: Combine formatting and row creation into a single loop.
+
+4. React key problem
+
+Using index as key → can cause rendering bugs.
+
+Fix: Use a unique property like balance.currency.
+
+5. Unsafe price calculation
+
+prices[balance.currency] * amount may be NaN if price missing.
+
+Fix: Add fallback (prices[balance.currency] ?? 0) * amount.
+
+6. Weak TypeScript
+
+blockchain: any → loses type safety.
+
+Fix: Use blockchain: string in WalletBalance interface.
+
+7. Inefficient switch
+
+getPriority switch → linear lookup every call.
+
+Fix: Use object map for constant-time lookup.
